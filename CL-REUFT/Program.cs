@@ -2,11 +2,11 @@
 
 
 using CL_REUFT;
+using static CL_REUFT.Tetris;
 using System.Text;
-using static CL_REUFT.GeneralUtilityFunctions;
 using static CL_REUFT.Text_UI;
+
 using System.Diagnostics;
-using System;
 Console.OutputEncoding = Encoding.UTF8;
 
 
@@ -143,7 +143,7 @@ void RSA_Decryptor()
     long private_key = Convert.ToInt64(Console.ReadLine());
     Console.WriteLine("Give Product of primes");
     long product_of_primes = Convert.ToInt64(Console.ReadLine());
-    var tmp2 = RSA_object.decrypt_text(encrypted_message, private_key, product_of_primes);
+    List<long> tmp2 = RSA_object.decrypt_text(encrypted_message, private_key, product_of_primes);
 
     foreach (long num in tmp2) { Console.Write(num); }
     
@@ -158,7 +158,7 @@ void Submenu_amusements()
 {
 Canvas Amusements_Canvas = new Canvas();
 Console.Clear();
-CL_REUFT.Text_UI.Create_Button(Amusements_Canvas, new CL_REUFT.Text_UI.Text("Tetris"), RSA_Encryption);
+CL_REUFT.Text_UI.Create_Button(Amusements_Canvas, new CL_REUFT.Text_UI.Text("Tetris"), new Tetris().init);
     CL_REUFT.Text_UI.Create_Button(Amusements_Canvas, new CL_REUFT.Text_UI.Text("Back"), main_menu);
 
     while (true) 
@@ -193,28 +193,7 @@ void main_menu()
         Main_Menu_Canvas.UpdateLoop();
 
     }
-     Canvas Main_Menu_Main_Menu_Canvas = new Canvas();
-    CL_REUFT.Text_UI.Create_Text(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Welcome to CL-Reuft"));
-
-    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("RSA Encryption"), RSA_Encryption);
-    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("RSA Decryption"), RSA_Decryptor);
-    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Flash Usb ||| Needs DD and Admin"), FlashUsb);
-
-    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Amusements"), Submenu_amusements);
-
-
-
-
-
-    Console.Clear();
-    Console.CursorVisible = false;
-    while (true)
-    {
-
-        Console.Clear();
-        Main_Menu_Canvas.UpdateLoop();
-
-    }
+    
 
 
 }
