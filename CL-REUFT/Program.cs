@@ -143,31 +143,82 @@ void RSA_Decryptor()
     long private_key = Convert.ToInt64(Console.ReadLine());
     Console.WriteLine("Give Product of primes");
     long product_of_primes = Convert.ToInt64(Console.ReadLine());
+    var tmp2 = RSA_object.decrypt_text(encrypted_message, private_key, product_of_primes);
 
-    Console.WriteLine( RSA_object.decrypt_text(encrypted_message, private_key, product_of_primes));
+    foreach (long num in tmp2) { Console.Write(num); }
+    
     
     Console.WriteLine("Press Any key to go back");
     Console.ReadLine();
 }
 
-Canvas canvas = new Canvas();
-
-CL_REUFT.Text_UI.Create_Text(canvas, new CL_REUFT.Text_UI.Text("Welcome to CL-Reuft"));
-
-CL_REUFT.Text_UI.Create_Button(canvas, new CL_REUFT.Text_UI.Text("RSA Encryption"), RSA_Encryption);
-CL_REUFT.Text_UI.Create_Button(canvas, new CL_REUFT.Text_UI.Text("RSA Decryption"), RSA_Decryptor);
-CL_REUFT.Text_UI.Create_Button(canvas, new CL_REUFT.Text_UI.Text("Flash Usb ||| Needs DD and Admin"), FlashUsb);
 
 
-Console.ReadKey();
-
-Console.CursorVisible = false;
-while (true)
+void Submenu_amusements() 
 {
+Canvas Amusements_Canvas = new Canvas();
+Console.Clear();
+CL_REUFT.Text_UI.Create_Button(Amusements_Canvas, new CL_REUFT.Text_UI.Text("Tetris"), RSA_Encryption);
+    CL_REUFT.Text_UI.Create_Button(Amusements_Canvas, new CL_REUFT.Text_UI.Text("Back"), main_menu);
+
+    while (true) 
+    {
+     Console.Clear();
+     Amusements_Canvas.UpdateLoop();
+    
+    }
+}
+
+void main_menu()
+{
+    Canvas Main_Menu_Canvas = new Canvas();
+    CL_REUFT.Text_UI.Create_Text(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Welcome to CL-Reuft"));
+
+    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("RSA Encryption"), RSA_Encryption);
+    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("RSA Decryption"), RSA_Decryptor);
+    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Flash Usb ||| Needs DD and Admin"), FlashUsb);
+
+    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Amusements"), Submenu_amusements);
+
+
+
+
 
     Console.Clear();
-    canvas.UpdateLoop();
+    Console.CursorVisible = false;
+    while (true)
+    {
+
+        Console.Clear();
+        Main_Menu_Canvas.UpdateLoop();
+
+    }
+     Canvas Main_Menu_Main_Menu_Canvas = new Canvas();
+    CL_REUFT.Text_UI.Create_Text(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Welcome to CL-Reuft"));
+
+    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("RSA Encryption"), RSA_Encryption);
+    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("RSA Decryption"), RSA_Decryptor);
+    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Flash Usb ||| Needs DD and Admin"), FlashUsb);
+
+    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Amusements"), Submenu_amusements);
+
+
+
+
+
+    Console.Clear();
+    Console.CursorVisible = false;
+    while (true)
+    {
+
+        Console.Clear();
+        Main_Menu_Canvas.UpdateLoop();
+
+    }
+
 
 }
+
+main_menu();
 
 

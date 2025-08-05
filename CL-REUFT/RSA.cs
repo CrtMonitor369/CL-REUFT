@@ -63,15 +63,15 @@ namespace CL_REUFT
             long Private_Key_Exponent = 0;
             long Temporary_Variable = 0;
 
-            //TODO : Working Congurence algorithm
+
             Private_Key_Exponent = ModInverse(Public_Key_Exponent, Totient);
-            //Insert Congurence Algorithm here
+
 
             List<long> Encrypted_numbers = new List<long>();
          
             foreach (long number in StringAsInt) 
             {
-                Console.WriteLine(number);
+    
             Encrypted_numbers.Add(GeneralUtilityFunctions.CalculatePower(number, Public_Key_Exponent)%Modulus);
             }
             return (Encrypted_numbers, Private_Key_Exponent, Modulus);
@@ -122,12 +122,14 @@ namespace CL_REUFT
 
         }
 
-        public string decrypt_text(List<long> Encrypted_message, long private_key, long product_of_primes)
+        public List<long> decrypt_text(List<long> Encrypted_message, long private_key, long product_of_primes)
         {
-            string Decrypted_Message = "";
+            
+           List<long> Decrypted_Message = new List<long>();
            foreach(long number in Encrypted_message) 
             {
-            Decrypted_Message = Decrypted_Message+(char)(GeneralUtilityFunctions.CalculatePower(number, private_key)%product_of_primes);
+                Decrypted_Message.Add(GeneralUtilityFunctions.CalculatePower(number, private_key) % product_of_primes);
+          
             }
             return Decrypted_Message;
         }
