@@ -6,12 +6,14 @@ using System.Text;
 using static CL_REUFT.GeneralUtilityFunctions;
 using static CL_REUFT.Text_UI;
 using System.Diagnostics;
+using System;
 Console.OutputEncoding = Encoding.UTF8;
 
 
 RSA RSA_object = new RSA();
 static void FlashUsb()
 {
+    Console.CursorVisible = true;
     Console.WriteLine("THIS PROGRAM REQUIRES DD, PLEASE PROVIDE LOCATION OF DD");
     string DD_Location = Console.ReadLine();
    
@@ -76,22 +78,39 @@ static void FlashUsb()
 {
     Console.CursorVisible = true;
 Console.Clear();
+   
+
+List<long> primes = new List<long>();
+    Console.WriteLine();
+ 
+    primes.Add(0);
+    primes.Add(0);
+    do
+    {
+        Console.WriteLine("Give the two primes");
+        primes[0] = (Convert.ToInt32(Console.ReadLine()));
+        primes[1] = (Convert.ToInt32(Console.ReadLine()));
+    }
+    while ((primes[0] == 0 || primes[1] == 0) && (primes[0].GetType() != typeof(int) || primes[1].GetType() != typeof(int)));
+
+    
+    
+    
 
 
-List<int> primes = new List<int>();
-    Console.WriteLine();
-    Console.WriteLine("Give the two primes");
-for(int i  = 0; i < 2; i++) { primes.Add(Convert.ToInt32(Console.ReadLine())); }
-    Console.WriteLine("Give the message to be encrypted");
-    var info = RSA_object.encrypt_text(Console.ReadLine(), primes);
-    var encrypted_message = CL_REUFT.GeneralUtilityFunctions.EscapeIt(info.Item1);
-    Console.Write(encrypted_message);
+        Console.WriteLine("Give the message to be encrypted (It will be converted into an integer form)");
+        var info = RSA_object.Encrypt_text(Console.ReadLine(), primes);
+    var encrypted_message = info.Item1;
+    Console.Write("[");
+        foreach(var item in encrypted_message) {  Console.Write(item); Console.Write(" "); }
+    Console.Write("]");
     Console.Write(" ");
-    Console.Write(info.Item2);
-    Console.Write(" ");
-    Console.Write(info.Item3);
-    Console.WriteLine();
-    Console.WriteLine("Encrypted message,Private key, product of primes");
+        Console.Write(info.Item2);
+        Console.Write(" ");
+        Console.Write(info.Item3);
+        Console.WriteLine();
+        Console.WriteLine("Encrypted message,Private key, product of primes");
+    
     Console.WriteLine("Press Any key to go back");
     Console.ReadLine();
 
@@ -106,15 +125,28 @@ void RSA_Decryptor()
 
     Console.CursorVisible=true;
     Console.Clear();
-    Console.WriteLine("Give the encrypted text");
-    string encrypted_text = CL_REUFT.GeneralUtilityFunctions.EscapeIt(Console.ReadLine());
-    Console.WriteLine("Give the private key");
-    var private_key = Convert.ToInt32(Console.ReadLine());
-    Console.WriteLine("Give product of primes");
-    var product_of_primes = Convert.ToInt32(Console.ReadLine());
 
-    var decrypted_message = RSA_object.decrypt_text(encrypted_text, private_key, product_of_primes);
-    Console.WriteLine(decrypted_message);
+    List<long> encrypted_message = new List<long>();
+    Console.WriteLine("Enter every number of the encrypted message, type S to stop");
+    var tmp = Console.ReadLine();
+    do
+    {
+        tmp = Console.ReadLine();
+        if (tmp.ToUpper() != "S")
+        {
+            encrypted_message.Add(Convert.ToInt32(tmp));
+        }
+    }
+    while (tmp.ToUpper() != "S");
+
+    Console.WriteLine("Give private key");
+    long private_key = Convert.ToInt64(Console.ReadLine());
+    Console.WriteLine("Give Product of primes");
+    long product_of_primes = Convert.ToInt64(Console.ReadLine());
+
+    Console.WriteLine( RSA_object.decrypt_text(encrypted_message, private_key, product_of_primes));
+    
+    Console.WriteLine("Press Any key to go back");
     Console.ReadLine();
 }
 
@@ -124,7 +156,7 @@ CL_REUFT.Text_UI.Create_Text(canvas, new CL_REUFT.Text_UI.Text("Welcome to CL-Re
 
 CL_REUFT.Text_UI.Create_Button(canvas, new CL_REUFT.Text_UI.Text("RSA Encryption"), RSA_Encryption);
 CL_REUFT.Text_UI.Create_Button(canvas, new CL_REUFT.Text_UI.Text("RSA Decryption"), RSA_Decryptor);
-CL_REUFT.Text_UI.Create_Button(canvas, new CL_REUFT.Text_UI.Text("Flash Usb"), FlashUsb);
+CL_REUFT.Text_UI.Create_Button(canvas, new CL_REUFT.Text_UI.Text("Flash Usb ||| Needs DD and Admin"), FlashUsb);
 
 
 Console.ReadKey();

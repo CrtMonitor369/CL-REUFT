@@ -32,5 +32,12 @@ namespace CL_REUFT
             }
             return builder.ToString();
         }
+        static public long CalculatePower(long number, long powerOf)
+        {
+            long result = number;
+            for (int i = 2; i <= powerOf; i++)
+                result *= number;
+            return result;
+        }
     }
 }

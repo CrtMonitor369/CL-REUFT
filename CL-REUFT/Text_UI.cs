@@ -40,6 +40,11 @@ namespace CL_REUFT
             }
         private void CanvasLogic() 
             {
+                if (Selected_Button_ID < 0) { Selected_Button_ID = ButtonList.Count - 1; }
+                else
+                {
+                    Selected_Button_ID = Selected_Button_ID % (ButtonList.Count);
+                }
                 if (Console.KeyAvailable) 
                 {
                 var key = Console.ReadKey();
