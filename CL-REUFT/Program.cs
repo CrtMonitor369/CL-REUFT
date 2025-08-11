@@ -7,6 +7,7 @@ using System.Text;
 using static CL_REUFT.Text_UI;
 
 using System.Diagnostics;
+using System.Numerics;
 Console.OutputEncoding = Encoding.UTF8;
 
 
@@ -77,79 +78,55 @@ static void FlashUsb()
  void RSA_Encryption() 
 {
     Console.CursorVisible = true;
-Console.Clear();
-   
-
-List<long> primes = new List<long>();
-    Console.WriteLine();
- 
-    primes.Add(0);
-    primes.Add(0);
-    do
+    Console.Clear();
+    List<BigInteger> Encrypted_Numbers= new List<BigInteger>();
+    Console.WriteLine("Give all the letters of the thing you want to encrypt, type * once you're done");
+    while (true) 
     {
-        Console.WriteLine("Give the two primes");
-        primes[0] = (Convert.ToInt32(Console.ReadLine()));
-        primes[1] = (Convert.ToInt32(Console.ReadLine()));
+        var tmp = Console.ReadLine()[0];
+        if (tmp == '*') { break; }
+        long tmp2 = Convert.ToInt64(tmp);
+        var tmp3 = tmp2.ToString();
+        Encrypted_Numbers.Add(BigInteger.Parse(tmp3));   
     }
-    while ((primes[0] == 0 || primes[1] == 0) && (primes[0].GetType() != typeof(int) || primes[1].GetType() != typeof(int)));
 
+    var Keys = RSA_object.GenerateKeys();
+    //var Encrypted_Num = RSA_object.Encrypt_text(m, Keys[0], Keys[2]);
+    foreach(var enc_num in Encrypted_Numbers) 
+    {
+        var Encrypted_Num = RSA_object.Encrypt_text(enc_num, Keys[0], Keys[2]);
+        Console.WriteLine(Encrypted_Num);
+    }
+   
+    Console.ReadKey();
     
-    
-    
-
-
-        Console.WriteLine("Give the message to be encrypted (It will be converted into an integer form)");
-        var info = RSA_object.Encrypt_text(Console.ReadLine(), primes);
-    var encrypted_message = info.Item1;
-    Console.Write("[");
-        foreach(var item in encrypted_message) {  Console.Write(item); Console.Write(" "); }
-    Console.Write("]");
-    Console.Write(" ");
-        Console.Write(info.Item2);
-        Console.Write(" ");
-        Console.Write(info.Item3);
-        Console.WriteLine();
-        Console.WriteLine("Encrypted message,Private key, product of primes");
-    
-    Console.WriteLine("Press Any key to go back");
-    Console.ReadLine();
-
-    Console.CursorVisible=false;
-
-
 }
 void RSA_Decryptor() 
 {
-
-    
-
-    Console.CursorVisible=true;
+    Console.CursorVisible = true;
     Console.Clear();
-
-    List<long> encrypted_message = new List<long>();
-    Console.WriteLine("Enter every number of the encrypted message, type S to stop");
-    var tmp = Console.ReadLine();
-    do
+    Console.WriteLine("Give private key values (d, n)");
+    var Keys = RSA_object.GenerateKeys();
+    var d = Keys[1];
+    var n = Keys[2];
+    List<BigInteger> Encrypted_Numbers = new List<BigInteger>();
+    Console.WriteLine("Write the number series one at a time, type Q once you're done");
+    while (true) 
     {
-        tmp = Console.ReadLine();
-        if (tmp.ToUpper() != "S")
-        {
-            encrypted_message.Add(Convert.ToInt32(tmp));
-        }
+       
+        var tmp = Console.ReadLine();
+        if (tmp.ToUpper() == "Q") { break; }
+        var tmp2= Convert.ToInt64(tmp);
+        tmp = Convert.ToString(tmp);
+        Encrypted_Numbers.Add(BigInteger.Parse(tmp));
     }
-    while (tmp.ToUpper() != "S");
+    foreach (var num in Encrypted_Numbers) 
+    {
+        Console.Write((char)RSA_object.decrypt_text(num, d, n));
+    }
+    Console.ReadKey();
+    //Console.WriteLine(RSA_object.decrypt_text(Encrypted_Num, d, n));
 
-    Console.WriteLine("Give private key");
-    long private_key = Convert.ToInt64(Console.ReadLine());
-    Console.WriteLine("Give Product of primes");
-    long product_of_primes = Convert.ToInt64(Console.ReadLine());
-    List<long> tmp2 = RSA_object.decrypt_text(encrypted_message, private_key, product_of_primes);
-
-    foreach (long num in tmp2) { Console.Write(num); }
-    
-    
-    Console.WriteLine("Press Any key to go back");
-    Console.ReadLine();
 }
 
 
@@ -171,6 +148,7 @@ CL_REUFT.Text_UI.Create_Button(Amusements_Canvas, new CL_REUFT.Text_UI.Text("Tet
 
 void main_menu()
 {
+    
     Canvas Main_Menu_Canvas = new Canvas();
     CL_REUFT.Text_UI.Create_Text(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Welcome to CL-Reuft"));
 
