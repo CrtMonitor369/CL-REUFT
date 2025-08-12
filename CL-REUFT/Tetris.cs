@@ -8,42 +8,49 @@ namespace CL_REUFT
 {
     internal class Tetris
     {
+        class Position
+        {
+            private int x;
+            private int y; 
+            public Position(int x, int y)
+            {
+                this.x = x;
+                this.y = y;
+            }
+            public int GetX() {  return x; }
+            public int GetY() { return y; }
+            public void SetX(int x) { this.x = x; }
+            public void SetY(int y) { this.y = y; }
+
+        }
+
         const short SizeOfATetronomino = 9;
         const short Rotations = 4;
         const short StartX =0;
         const short StartY=0;
-        short x = 0;
-        short y = 0;
-        short CurrentShape = 0;
+        Position PlayerPosition = new Position(0,0);
+        short CurrentShape = 1;
         short CurrentRotation = 0;
         float VariableForIncreasingYSlowly = 0f;
         List<int> board = new List<int>();
-
-        List<List<int>> Shapes = new List<List<int>>();
+        List<List<Position>> Shapes = new List<List<Position>>();
+        
+        
 
         public void init() 
         {
-            //Square block definition
-            Shapes.Add(new List<int>() 
+           
+           Shapes.Clear();
+            Shapes.Add(new List<Position>() 
             {
-                1,1,0,  //First rotation
-                1,1,0,
-                0,0,0,
+            new Position(0,0),
+            new Position(1,0),
+            new Position(0,-1),
+            new Position(-1,-1),
+            }
+            );
 
-                1,1,0,  //Second rotation
-                1,1,0,
-                0,0,0,
 
-                1,1,0, //Third rotation
-                1,1,0,
-                0,0,0,
-
-                1,1,0, //Fourth rotation
-                1,1,0,
-                0,0,0,
-            });
-
-            
             for (int i = 0; i < 200; i++) 
             {
             board.Add(0);
@@ -51,17 +58,7 @@ namespace CL_REUFT
 
             GameLoop();
         }
-        private void DrawShape(short shape, short rotation) 
-        {
-            Console.SetCursorPosition(x,y);
-            for (int i = rotation; i < 9; i++) {
-                if (Shapes[shape][i] == 0) { Console.SetCursorPosition(x, y + 1); }
-                else
-                {
-                    Console.Write("#");
-                }
-            }
-        }
+        
         private void DrawBoard() 
         {
             
@@ -83,30 +80,16 @@ namespace CL_REUFT
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.LeftArrow:
-                        x -= 1;
+                     
                         break;
                     case ConsoleKey.RightArrow:
-                        x += 1;
+                    
                         break;
+                    
 
                 }
             }
-            switch (CurrentShape) {
-                case 0:
-                    switch (CurrentRotation) 
-                    {
-                        default:
-                            if (y != 17)
-                            {
-                                VariableForIncreasingYSlowly += 0.25f;
-                                if (VariableForIncreasingYSlowly > 1) { VariableForIncreasingYSlowly = 0; }
-                                y += Convert.ToInt16(VariableForIncreasingYSlowly);
-                            }
-                            break;
-                    }
-                    break;
-
-            }
+            
             
 
         }
@@ -121,7 +104,7 @@ namespace CL_REUFT
             {
                 Console.Clear();    
                 DrawBoard();
-                DrawShape(CurrentShape, CurrentRotation); //Shape and Rotation, these are not x and y positions
+       
                 GameLogic();
                 Thread.Sleep(50);
             }
