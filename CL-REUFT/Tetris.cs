@@ -29,7 +29,7 @@ namespace CL_REUFT
         const short StartX =0;
         const short StartY=0;
         Position PlayerPosition = new Position(0,0);
-        short CurrentShape = 1;
+        short CurrentShape = 0;
         short CurrentRotation = 0;
         float VariableForIncreasingYSlowly = 0f;
         List<int> board = new List<int>();
@@ -45,8 +45,8 @@ namespace CL_REUFT
             {
             new Position(0,0),
             new Position(1,0),
-            new Position(0,-1),
-            new Position(-1,-1),
+            new Position(0,1),
+            new Position(1,1),
             }
             );
 
@@ -58,7 +58,19 @@ namespace CL_REUFT
 
             GameLoop();
         }
-        
+        private void DrawShape()
+        {
+
+            Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)].GetX()+PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)].GetY()+PlayerPosition.GetY());
+            Console.Write("-");
+            Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)+1].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)+1].GetY() + PlayerPosition.GetY());
+            Console.Write("-");
+            Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4) + 2].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4) + 2].GetY() + PlayerPosition.GetY());
+            Console.Write("|");
+            Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)+3].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)+3].GetY() + PlayerPosition.GetY());
+            Console.Write("|");
+           
+        }
         private void DrawBoard() 
         {
             
@@ -74,7 +86,13 @@ namespace CL_REUFT
         }
         private void PlayerLogic() 
         {
-            
+            for (int i = 0; i < 4; i++) 
+            {
+                if(Shapes[CurrentShape][CurrentRotation * 4 + i].GetY()+PlayerPosition.GetY() < 17) 
+                {
+                PlayerPosition.SetY(PlayerPosition.GetY()+1);
+                }
+            }
             if (Console.KeyAvailable)
             {
                 switch (Console.ReadKey(true).Key)
@@ -104,9 +122,10 @@ namespace CL_REUFT
             {
                 Console.Clear();    
                 DrawBoard();
-       
-                GameLogic();
+                DrawShape();
                 Thread.Sleep(50);
+                GameLogic();
+                
             }
         }
 
