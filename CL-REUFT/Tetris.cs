@@ -29,7 +29,7 @@ namespace CL_REUFT
         const short StartX =0;
         const short StartY=0;
         Position PlayerPosition = new Position(0,0);
-        short CurrentShape = 0;
+        short CurrentShape = 1;
         short CurrentRotation = 0;
         float VariableForIncreasingYSlowly = 0f;
         List<int> board = new List<int>();
@@ -47,8 +47,44 @@ namespace CL_REUFT
             new Position(1,0),
             new Position(0,1),
             new Position(1,1),
+
+            new Position(0,0),
+            new Position(1,0),
+            new Position(0,1),
+            new Position(1,1),
+
+            new Position(0,0),
+            new Position(1,0),
+            new Position(0,1),
+            new Position(1,1),
+
+            new Position(0,0),
+            new Position(1,0),
+            new Position(0,1),
+            new Position(1,1),
             }
             );
+            Shapes.Add(new List<Position>()
+            {
+            new Position(1,0),
+            new Position(1,1),
+            new Position(1,2),
+            new Position(0,2),
+
+            new Position(0,0),
+            new Position(0,1),
+            new Position(1,1),
+            new Position(2,1),
+
+            new Position(0,0),
+            new Position(1,0),
+            new Position(0,1),
+            new Position(0,2),
+
+
+            }
+            );
+
 
 
             for (int i = 0; i < 200; i++) 
@@ -66,9 +102,9 @@ namespace CL_REUFT
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)+1].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)+1].GetY() + PlayerPosition.GetY());
             Console.Write("-");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4) + 2].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4) + 2].GetY() + PlayerPosition.GetY());
-            Console.Write("|");
+            Console.Write("-");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)+3].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)+3].GetY() + PlayerPosition.GetY());
-            Console.Write("|");
+            Console.Write("-");
            
         }
         private void DrawBoard() 
@@ -86,13 +122,17 @@ namespace CL_REUFT
         }
         private void PlayerLogic() 
         {
+            PlayerPosition.SetY(PlayerPosition.GetY() + 1);
             for (int i = 0; i < 4; i++) 
             {
-                if(Shapes[CurrentShape][CurrentRotation * 4 + i].GetY()+PlayerPosition.GetY() < 17) 
+                if(!(Shapes[CurrentShape][CurrentRotation * 4 + i].GetY()+PlayerPosition.GetY() < 20-Shapes[CurrentShape][CurrentRotation * 4 + i].GetY())) 
                 {
-                PlayerPosition.SetY(PlayerPosition.GetY()+1);
+                    PlayerPosition.SetY(PlayerPosition.GetY() - 1);
                 }
+               
             }
+            
+
             if (Console.KeyAvailable)
             {
                 switch (Console.ReadKey(true).Key)
@@ -102,6 +142,11 @@ namespace CL_REUFT
                         break;
                     case ConsoleKey.RightArrow:
                     
+                        break;
+                    case ConsoleKey.UpArrow:
+                        CurrentRotation %= 3;
+                        CurrentRotation += 1;
+
                         break;
                     
 
