@@ -8,11 +8,11 @@ namespace CL_REUFT
 {
     internal class Tetris
     {
-        class Position
+        class Position //Position class to make life easier
         {
             private int x;
             private int y; 
-            public Position(int x, int y)
+            public Position(int x, int y) 
             {
                 this.x = x;
                 this.y = y;
@@ -24,16 +24,15 @@ namespace CL_REUFT
 
         }
 
-        const short SizeOfATetronomino = 9;
-        const short Rotations = 4;
-        const short StartX =0;
-        const short StartY=0;
-        Position PlayerPosition = new Position(0,0);
-        short CurrentShape = 1;
-        short CurrentRotation = 0;
-        float VariableForIncreasingYSlowly = 0f;
-        List<int> board = new List<int>();
-        List<List<Position>> Shapes = new List<List<Position>>();
+    
+    
+       
+        Position PlayerPosition = new Position(0,0); //The player's position
+        short CurrentShape = 1; //The current shape...duh
+        short CurrentRotation = 0; //The current rotation...duh
+        
+        List<int> board = new List<int>(); //The static board, ie where the tetronominoes are placed after a second or so of not moving
+        List<List<Position>> Shapes = new List<List<Position>>(); //2D list of positions representing the tetronominoes
         
         
 
@@ -41,6 +40,7 @@ namespace CL_REUFT
         {
            
            Shapes.Clear();
+            //Self explanatory
             Shapes.Add(new List<Position>() 
             {
             new Position(0,0),
@@ -96,7 +96,9 @@ namespace CL_REUFT
         }
         private void DrawShape()
         {
-
+            //Set the cursor to the position defined in the shapes list plus the position of the player
+            //This could be done with a for loop but since each tetronomino is only 4 cells in size there is no need
+            //I think this is more readable anyway
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)].GetX()+PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)].GetY()+PlayerPosition.GetY());
             Console.Write("-");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)+1].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)+1].GetY() + PlayerPosition.GetY());
@@ -109,7 +111,7 @@ namespace CL_REUFT
         }
         private void DrawBoard() 
         {
-            
+            //Go through the static board and draw it
             for (int i = 0; i < 20; i++) 
             {
                 for (int j = 0; j < 10; j++)
@@ -156,7 +158,7 @@ namespace CL_REUFT
             
 
         }
-        private void GameLogic() 
+        private void GameLogic() //Kind of a redundant function, only here in case the codebase expands
         {
             PlayerLogic();
         }

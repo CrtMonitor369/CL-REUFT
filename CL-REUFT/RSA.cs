@@ -20,6 +20,7 @@ namespace CL_REUFT
         }
          private BigInteger ModInverse(BigInteger e, BigInteger phi) 
         {
+            //Keep increasing d for as long as it's under phi, return d if the remainder of the product of e and d with phi is one
             for (BigInteger d = 2; d < phi; d++) 
             {
             if((e*d)%phi == 1) { return d;}
@@ -30,6 +31,7 @@ namespace CL_REUFT
 
         public List<BigInteger> GenerateKeys()
         {
+            //Normal RSA encryption algorithm, idk why the maths work, not a number theorist
             BigInteger p = 7919;
             BigInteger q = 1009;
             BigInteger n = p * q;
