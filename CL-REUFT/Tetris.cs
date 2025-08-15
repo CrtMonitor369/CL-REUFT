@@ -31,15 +31,15 @@ namespace CL_REUFT
         Position PlayerPosition = new Position(0,0);
         short CurrentShape = 1;
         short CurrentRotation = 0;
-        float VariableForIncreasingYSlowly = 0f;
+        
         List<int> board = new List<int>();
         List<List<Position>> Shapes = new List<List<Position>>();
-        
-        
+        int score;
+        float timer = 0;
 
         public void init() 
         {
-           
+            score = 0;
            Shapes.Clear();
             Shapes.Add(new List<Position>() 
             {
@@ -98,14 +98,20 @@ namespace CL_REUFT
         {
 
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)].GetX()+PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)].GetY()+PlayerPosition.GetY());
-            Console.Write("-");
+            Console.Write("$");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)+1].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)+1].GetY() + PlayerPosition.GetY());
-            Console.Write("-");
+            Console.Write("$");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4) + 2].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4) + 2].GetY() + PlayerPosition.GetY());
-            Console.Write("-");
+            Console.Write("$");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)+3].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)+3].GetY() + PlayerPosition.GetY());
-            Console.Write("-");
+            Console.Write("$");
            
+        }
+        private void DrawUI() 
+        {
+            Console.SetCursorPosition(10,25);
+            Console.Write("Score: ");
+            Console.Write(score);
         }
         private void DrawBoard() 
         {
@@ -128,9 +134,28 @@ namespace CL_REUFT
                 if(!(Shapes[CurrentShape][CurrentRotation * 4 + i].GetY()+PlayerPosition.GetY() < 20-Shapes[CurrentShape][CurrentRotation * 4 + i].GetY())) 
                 {
                     PlayerPosition.SetY(PlayerPosition.GetY() - 1);
+                    if (timer > 2)
+                    {
+                       
+                        int ShapeY = Shapes[CurrentShape][CurrentRotation * 4 + i].GetY() + PlayerPosition.GetY();
+                        int ShapeX = Shapes[CurrentShape][CurrentRotation * 4 + i].GetX() + PlayerPosition.GetX();
+                        board[ShapeY * 10 + ShapeX] = 1;
+                        timer = 0;
+                        PlayerPosition.SetY(0);
+                        PlayerPosition.SetX(0);
+                    }
+                    else
+                    {
+                        timer += .5f;
+                    }
                 }
                
             }
+            
+            
+            
+            
+            
             
 
             if (Console.KeyAvailable)
@@ -138,10 +163,10 @@ namespace CL_REUFT
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.LeftArrow:
-                     
+                        PlayerPosition.SetX(PlayerPosition.GetX() - 1);
                         break;
                     case ConsoleKey.RightArrow:
-                    
+                        PlayerPosition.SetX(PlayerPosition.GetX() + 1);
                         break;
                     case ConsoleKey.UpArrow:
                         CurrentRotation %= 3;
@@ -170,6 +195,7 @@ namespace CL_REUFT
                 DrawShape();
                 Thread.Sleep(50);
                 GameLogic();
+                DrawUI();
                 
             }
         }
