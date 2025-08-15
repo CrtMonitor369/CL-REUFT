@@ -28,7 +28,7 @@ namespace CL_REUFT
     
        
         Position PlayerPosition = new Position(0,0); //The player's position
-        short CurrentShape = 1; //The current shape...duh
+        short CurrentShape = 0; //The current shape...duh
         short CurrentRotation = 0; //The current rotation...duh
         
         List<int> board = new List<int>(); //The static board, ie where the tetronominoes are placed after a second or so of not moving
@@ -100,7 +100,7 @@ namespace CL_REUFT
             //This could be done with a for loop but since each tetronomino is only 4 cells in size there is no need
             //I think this is more readable anyway
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)].GetX()+PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)].GetY()+PlayerPosition.GetY());
-            Console.Write("-");
+            Console.Write("1");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)+1].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)+1].GetY() + PlayerPosition.GetY());
             Console.Write("-");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4) + 2].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4) + 2].GetY() + PlayerPosition.GetY());
