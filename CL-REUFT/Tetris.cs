@@ -28,17 +28,19 @@ namespace CL_REUFT
     
        
         Position PlayerPosition = new Position(0,0); //The player's position
-        short CurrentShape = 0; //The current shape...duh
+        short CurrentShape = 1; //The current shape...duh
         short CurrentRotation = 0; //The current rotation...duh
-        
+        bool ApplyingGravityToBoard=false;
         List<int> board = new List<int>(); //The static board, ie where the tetronominoes are placed after a second or so of not moving
         List<List<Position>> Shapes = new List<List<Position>>(); //2D list of positions representing the tetronominoes
-        
-        
-
+        float timer;
+        bool onFloor;
+        int score;
         public void init() 
         {
-           
+            score= 0;
+            onFloor = false;
+           timer=0;
            Shapes.Clear();
             //Self explanatory
             Shapes.Add(new List<Position>() 
@@ -81,6 +83,11 @@ namespace CL_REUFT
             new Position(0,1),
             new Position(0,2),
 
+            new Position(0,0),
+            new Position(1,0),
+            new Position(2,0),
+            new Position(2,1),
+
 
             }
             );
@@ -100,13 +107,13 @@ namespace CL_REUFT
             //This could be done with a for loop but since each tetronomino is only 4 cells in size there is no need
             //I think this is more readable anyway
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)].GetX()+PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)].GetY()+PlayerPosition.GetY());
-            Console.Write("1");
+            Console.Write("&");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)+1].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)+1].GetY() + PlayerPosition.GetY());
-            Console.Write("-");
+            Console.Write("&");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4) + 2].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4) + 2].GetY() + PlayerPosition.GetY());
-            Console.Write("-");
+            Console.Write("&");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)+3].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)+3].GetY() + PlayerPosition.GetY());
-            Console.Write("-");
+            Console.Write("&");
            
         }
         private void DrawBoard() 
@@ -116,53 +123,233 @@ namespace CL_REUFT
             {
                 for (int j = 0; j < 10; j++)
                 {
-                Console.Write(board[i*10+j]);
+                    if (board[i * 10 + j] == 0)
+                    {
+                        Console.Write("-");
+                    }
+                    else
+                    {
+                        Console.Write("#");
+                    }
                 }
                 Console.SetCursorPosition(0, i);
             }
            
         }
-        private void PlayerLogic() 
+        private void PlayerLogic() //Horrid and inefficient code here, mostly works, occasional glitch where player clips through blocks, no clue why
+
         {
-            PlayerPosition.SetY(PlayerPosition.GetY() + 1);
-            for (int i = 0; i < 4; i++) 
+            //Funky code full of magic numbers, this could certainly be done in a smarter way
+            if (ApplyingGravityToBoard != true)
             {
-                if(!(Shapes[CurrentShape][CurrentRotation * 4 + i].GetY()+PlayerPosition.GetY() < 20-Shapes[CurrentShape][CurrentRotation * 4 + i].GetY())) 
+                Position LastPos = PlayerPosition;
+                for (int i = 0; i < 4; i++)
                 {
-                    PlayerPosition.SetY(PlayerPosition.GetY() - 1);
+                    int playerY = (Shapes[CurrentShape][CurrentRotation * 4 + i].GetY() + PlayerPosition.GetY());
+                    int playerX = Shapes[CurrentShape][CurrentRotation * 4 + i].GetX() + PlayerPosition.GetX();
+                    if (board[(10 * playerY + playerX)] != 0)
+                    {
+                        PlayerPosition = LastPos;
+                        break;
+                    }
                 }
-               
-            }
-            
-
-            if (Console.KeyAvailable)
-            {
-                switch (Console.ReadKey(true).Key)
+                LastPos = PlayerPosition;
+                if (timer > 2)
                 {
-                    case ConsoleKey.LeftArrow:
-                     
-                        break;
-                    case ConsoleKey.RightArrow:
-                    
-                        break;
-                    case ConsoleKey.UpArrow:
-                        CurrentRotation %= 3;
-                        CurrentRotation += 1;
+                    PlayerPosition.SetY(PlayerPosition.GetY() + 1);
+                    timer = 0;
+                }
+                timer++;
+                for (int i = 0; i < 4; i++)
+                {
+                    int playerY = (Shapes[CurrentShape][CurrentRotation * 4 + i].GetY() + PlayerPosition.GetY()) + 1;
+                    int playerX = Shapes[CurrentShape][CurrentRotation * 4 + i].GetX() + PlayerPosition.GetX();
 
-                        break;
-                    
+
+
+
+                    if (playerY > 19)
+                    {
+                        PlayerPosition.SetY(PlayerPosition.GetY() - 1);
+                        onFloor = true;
+                    }
+                    else
+                    {
+
+                        int elementBelow = 0;
+                        if (playerY < 19)
+                        {
+                            elementBelow = board[(10 * (playerY + 1) + playerX)];
+                        }
+                        if (elementBelow == 1)
+                        {
+                            onFloor = true;
+                        }
+                        /*if (elementAtCurrentPosition == 1 && onFloor==false)
+                        {
+                            PlayerPosition.SetY(PlayerPosition.GetY() - 1);
+
+                            onFloor = true;
+
+                        }*/
+                    }
+
+
+
 
                 }
-            }
-            
-            
+                if (onFloor)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
 
+                        int playerX = Shapes[CurrentShape][CurrentRotation * 4 + i].GetX() + PlayerPosition.GetX();
+                        int playerY = (Shapes[CurrentShape][CurrentRotation * 4 + i].GetY() + PlayerPosition.GetY() + 1);
+                        board[(10 * playerY + playerX)] = 1;
+
+                        if (i == 3)
+                        {
+                            PlayerPosition.SetX(0);
+                            PlayerPosition.SetY(0);
+                            timer = 0;
+                            CurrentRotation = 0;
+                            onFloor = false;
+                        }
+
+
+                    }
+                }
+
+
+                if (Console.KeyAvailable)
+                {
+                    switch (Console.ReadKey(true).Key)
+                    {
+                        case ConsoleKey.LeftArrow:
+                            for (int i = 0; i < 4; i++)
+                            {
+                                int playerY = (Shapes[CurrentShape][CurrentRotation * 4 + i].GetY() + PlayerPosition.GetY() + 1);
+                                int playerX = Shapes[CurrentShape][CurrentRotation * 4 + i].GetX() + PlayerPosition.GetX();
+                                int ElementToTheLeft = 0;
+
+                                if (playerX < 8)
+                                {
+                                    ElementToTheLeft = board[(10 * playerY + playerX - 1)];
+                                }
+
+
+                                //int playerY = (Shapes[CurrentShape][CurrentRotation * 4 + i].GetY() + PlayerPosition.GetY()) + 1;
+                                if (playerX - 1 < 0) { break; }
+                                if (i == 3 && ElementToTheLeft != 1)
+                                {
+                                    PlayerPosition.SetX(PlayerPosition.GetX() - 1);
+                                }
+                                else if (ElementToTheLeft == 1)
+                                { break; }
+
+                            }
+                            break;
+                        case ConsoleKey.RightArrow:
+                            for (int i = 0; i < 4; i++)
+                            {
+                                int playerY = (Shapes[CurrentShape][CurrentRotation * 4 + i].GetY() + PlayerPosition.GetY() + 1);
+                                int playerX = Shapes[CurrentShape][CurrentRotation * 4 + i].GetX() + PlayerPosition.GetX();
+                                int ElementToTheRight = 0;
+
+                                if (playerX > 0)
+                                {
+                                    ElementToTheRight = board[(10 * playerY + playerX + 1)];
+                                }
+
+                                //int playerY = (Shapes[CurrentShape][CurrentRotation * 4 + i].GetY() + PlayerPosition.GetY()) + 1;
+                                if (playerX + 1 > 9) { break; }
+                                if (i == 3 && ElementToTheRight != 1)
+                                {
+                                    PlayerPosition.SetX(PlayerPosition.GetX() + 1);
+                                }
+
+                            }
+                            break;
+                        case ConsoleKey.UpArrow:
+
+                            int RotTest = CurrentRotation + 1;
+                            RotTest %= 3;
+                            for (int i = 0; i < 4; i++)
+                            {
+                                int playerX = Shapes[CurrentShape][RotTest * 4 + i].GetX() + PlayerPosition.GetX();
+                                int playerY = (Shapes[CurrentShape][RotTest * 4 + i].GetY() + PlayerPosition.GetY()) + 1;
+                                if (playerX > 9)
+                                {
+                                    PlayerPosition.SetX(PlayerPosition.GetX() - 1);
+                                }
+                                if (playerX < 0)
+                                {
+                                    PlayerPosition.SetX(PlayerPosition.GetX() + 1);
+                                }
+
+
+                            }
+                            CurrentRotation %= 3;
+                            CurrentRotation += 1;
+
+                            break;
+
+
+                    }
+                }
+
+
+
+            }
         }
-        private void GameLogic() //Kind of a redundant function, only here in case the codebase expands
+        private void GameLogic() 
         {
             PlayerLogic();
+            CheckIfLineToBeClearedAndClearAlsoApplyGravityToBlocks();
         }
-     
+        private void CheckIfLineToBeClearedAndClearAlsoApplyGravityToBlocks() 
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                int lineCount = 0;
+                bool RemoveLines = false;
+                for (int j = 0; j < 10; j++)
+                {
+                    if(board[i * 10 + j] != 0) { lineCount++; }
+                    if (lineCount == 9)
+                    {
+                       
+                        score += 1;
+                        ApplyingGravityToBoard=true;
+                        for(int w = 0; w < 10; w++) 
+                        {
+                            board[i * 10 + w] = 0;
+                        }
+                       
+                    }
+                    if (i != 19 && ApplyingGravityToBoard)
+                    {
+                        if (board[i * 10 + j] != 0 && board[i * 10 + j+10] == 0)
+                        {
+                            board[i * 10 + j] = 0;
+                            board[i * 10 + j+10] = 1;
+                        }
+
+                    }
+                    ApplyingGravityToBoard = false;
+                
+                    
+                    
+                }
+                
+                Console.SetCursorPosition(0, i);
+            }
+        }
+        private void DrawScore() 
+        {
+            Console.SetCursorPosition(10, 20);
+            Console.Write(score);
+        }
         private void GameLoop() 
         {
             while (true)
@@ -172,6 +359,9 @@ namespace CL_REUFT
                 DrawShape();
                 Thread.Sleep(50);
                 GameLogic();
+                DrawScore();
+               
+                
                 
             }
         }

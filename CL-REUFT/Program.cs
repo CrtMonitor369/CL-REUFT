@@ -5,7 +5,7 @@ using CL_REUFT;
 using static CL_REUFT.Tetris;
 using System.Text;
 using static CL_REUFT.Text_UI;
-
+using static CL_REUFT.CaesarCipher;
 using System.Diagnostics;
 using System.Numerics;
 Console.OutputEncoding = Encoding.UTF8;
@@ -129,7 +129,19 @@ void RSA_Decryptor()
 
 }
 
-
+void Caesar_Cipher() 
+{
+    Console.Clear();
+    int ShiftAmount = 0;
+    string EncryptedMsg = "";
+    Console.WriteLine("Give the message");
+    EncryptedMsg = Console.ReadLine();
+    Console.WriteLine("Give the shift amount");
+    ShiftAmount = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine(CL_REUFT.CaesarCipher.ShiftString(EncryptedMsg, ShiftAmount));
+    Console.WriteLine("Press any key to go back");
+    Console.Read();
+}
 
 void Submenu_amusements()  //Just a submenu for the amusements section
 {
@@ -140,9 +152,14 @@ CL_REUFT.Text_UI.Create_Button(Amusements_Canvas, new CL_REUFT.Text_UI.Text("Tet
 
     while (true) 
     {
-     Console.Clear();
-     Amusements_Canvas.UpdateLoop();
-    
+        Console.Clear();
+        Console.SetCursorPosition(0, 0);
+        Amusements_Canvas.UpdateLoop();
+
+        Thread.Sleep(50);
+        Console.SetCursorPosition(20, 29);
+        Console.Write(" ");
+
     }
 }
 
@@ -154,11 +171,14 @@ void main_menu()
     //Buttons are pressable, text is display only
     CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("RSA Encryption"), RSA_Encryption);
     CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("RSA Decryption"), RSA_Decryptor);
+    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Caesar Cipher"), Caesar_Cipher);
     CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Flash Usb ||| Needs DD and Admin"), FlashUsb);
+    
 
     CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Amusements"), Submenu_amusements);
 
 
+     
 
 
 
@@ -167,8 +187,16 @@ void main_menu()
     while (true) //Simple forever loop for the main menu
     {
 
+
         Console.Clear();
+        
+        Console.SetCursorPosition(0, 0);
         Main_Menu_Canvas.UpdateLoop();
+        Thread.Sleep(50);
+
+        //Hack to stop the flickering
+        Console.SetCursorPosition(20, 29);
+        Console.Write(" ");
 
     }
     
