@@ -36,8 +36,11 @@ namespace CL_REUFT
         float timer;
         bool onFloor;
         int score;
+        bool Sandmode = false;
         public void init() 
         {
+            Console.WriteLine("enable sandmode? y/n");
+            if (Console.ReadLine().ToUpper() == "Y") {Sandmode = true;}
             score= 0;
             onFloor = false;
            timer=0;
@@ -304,47 +307,65 @@ namespace CL_REUFT
         }
         private void GameLogic() 
         {
-            PlayerLogic();
-            CheckIfLineToBeClearedAndClearAlsoApplyGravityToBlocks();
-        }
-        private void CheckIfLineToBeClearedAndClearAlsoApplyGravityToBlocks() 
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                int lineCount = 0;
-                bool RemoveLines = false;
-                for (int j = 0; j < 10; j++)
-                {
-                    if(board[i * 10 + j] != 0) { lineCount++; }
-                    if (lineCount == 9)
-                    {
-                       
-                        score += 1;
-                        ApplyingGravityToBoard=true;
-                        for(int w = 0; w < 10; w++) 
-                        {
-                            board[i * 10 + w] = 0;
-                        }
-                       
-                    }
-                    if (i != 19 && ApplyingGravityToBoard)
-                    {
-                        if (board[i * 10 + j] != 0 && board[i * 10 + j+10] == 0)
-                        {
-                            board[i * 10 + j] = 0;
-                            board[i * 10 + j+10] = 1;
-                        }
 
+            if (Sandmode) 
+            {
+            ApplyGravityToLines();
+            }
+            ClearLines();
+            PlayerLogic();
+            //CheckIfLineToBeClearedAndClearAlsoApplyGravityToBlocks();
+        }
+        private void ClearLines() 
+        {
+            for (int i = 0; i < 20; i++) 
+            {
+                int block_amount = 0;
+                for (int j = 0; j < 10; j++) 
+                {
+                    if(board[i * 10 + j] != 0) 
+                    {
+
+                        block_amount += 1;
                     }
-                    ApplyingGravityToBoard = false;
-                
-                    
                     
                 }
-                
-                Console.SetCursorPosition(0, i);
+                if (block_amount == 10) 
+                {
+                   
+                    for (int j = 0; j < 10; j++)
+                    {
+                        if (Sandmode == false)
+                        {
+                            ApplyGravityToLines();
+                        }
+
+
+                        board[i * 10 + j] = 0;
+                        
+                    }
+                }
             }
         }
+        private void ApplyGravityToLines() 
+        {
+            for(int i = 0;i < 20; i++) 
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    if (i != 19)
+                    {
+                        if (board[i * 10 + j] == 1 && board[(i + 1) * 10 + j] == 0)
+                        {
+                            board[i * 10 + j] = 0;
+                            board[(i + 1) * 10 + j] = 1;
+
+                        }
+                    }
+                }
+            }
+        }
+        
         private void DrawScore() 
         {
             Console.SetCursorPosition(10, 20);

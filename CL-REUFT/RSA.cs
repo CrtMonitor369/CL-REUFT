@@ -31,7 +31,7 @@ namespace CL_REUFT
 
         public List<BigInteger> GenerateKeys()
         {
-            //Normal RSA encryption algorithm, idk why the maths work, not a number theorist
+            //Normal RSA encryption algorithm
             BigInteger p = 7919;
             BigInteger q = 1009;
             BigInteger n = p * q;
