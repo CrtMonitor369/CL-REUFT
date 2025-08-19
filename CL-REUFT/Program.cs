@@ -6,6 +6,7 @@ using static CL_REUFT.Tetris;
 using System.Text;
 using static CL_REUFT.Text_UI;
 using static CL_REUFT.CaesarCipher;
+using static CL_REUFT.GetToTheTop;
 using System.Diagnostics;
 using System.Numerics;
 Console.OutputEncoding = Encoding.UTF8;
@@ -148,6 +149,7 @@ void Submenu_amusements()  //Just a submenu for the amusements section
 Canvas Amusements_Canvas = new Canvas();
 Console.Clear();
 CL_REUFT.Text_UI.Create_Button(Amusements_Canvas, new CL_REUFT.Text_UI.Text("Tetris"), new Tetris().init);
+    CL_REUFT.Text_UI.Create_Button(Amusements_Canvas, new CL_REUFT.Text_UI.Text("Climb to the top : Tile scrolling test"), new CL_REUFT.GetToTheTop().Init);
     CL_REUFT.Text_UI.Create_Button(Amusements_Canvas, new CL_REUFT.Text_UI.Text("Back"), main_menu);
 
     while (true) 

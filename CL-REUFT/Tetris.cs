@@ -110,13 +110,13 @@ namespace CL_REUFT
             //This could be done with a for loop but since each tetronomino is only 4 cells in size there is no need
             //I think this is more readable anyway
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)].GetX()+PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)].GetY()+PlayerPosition.GetY());
-            Console.Write("&");
+            Console.Write("\u2589");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)+1].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)+1].GetY() + PlayerPosition.GetY());
-            Console.Write("&");
+            Console.Write("\u2589");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4) + 2].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4) + 2].GetY() + PlayerPosition.GetY());
-            Console.Write("&");
+            Console.Write("\u2589");
             Console.SetCursorPosition(Shapes[CurrentShape][(CurrentRotation * 4)+3].GetX() + PlayerPosition.GetX(), Shapes[CurrentShape][(CurrentRotation * 4)+3].GetY() + PlayerPosition.GetY());
-            Console.Write("&");
+            Console.Write("\u2589");
            
         }
         private void DrawBoard() 
@@ -128,11 +128,11 @@ namespace CL_REUFT
                 {
                     if (board[i * 10 + j] == 0)
                     {
-                        Console.Write("-");
+                        Console.Write("\u2591");
                     }
                     else
                     {
-                        Console.Write("#");
+                        Console.Write("\u2588");
                     }
                 }
                 Console.SetCursorPosition(0, i);
