@@ -42,7 +42,7 @@ namespace CL_REUFT
         {
             Console.WriteLine("WASD to move camera, arrow keys to move player");
             Console.WriteLine("Your goal is to get to the top at ~500 ft"); 
-            Console.WriteLine("The player can jump over blocks but only to empty spaces adjacent to the block");
+            Console.WriteLine("the player can walk over the walls by pressing the opposite key of where they want to go when on top of them");
             Console.WriteLine("There are special blocks scattered around, test out what they do, some of them may be of use while others may be disadvantageous");
             Console.ReadKey();
             player = new Player(new Position(50, 1000));
@@ -71,7 +71,10 @@ namespace CL_REUFT
                 {
                     map_static.Add(3);
                 }
-
+                else if (randomNumber % 32 == 0)
+                {
+                    map_static.Add(4);
+                }
 
                 else
                 {
@@ -180,7 +183,10 @@ namespace CL_REUFT
                         case 3:
                             Console.Write("\u25A9");
                             break;
-                        
+                        case 4:
+                            Console.Write("\u25B3");
+                            break;
+
 
                     }
                 }
@@ -225,8 +231,17 @@ namespace CL_REUFT
                     player.ftTravelled = 0;
 
                 }
-            
-           
+            if (player.PlayerIsCollidingWithWhat(map_static) == 4)
+            {
+
+
+                player.PlayerWorldSpace = new Position(50, 300);
+
+
+                player.ftTravelled = 300;
+
+            }
+
             if (Console.KeyAvailable) 
             {
                 
