@@ -7,6 +7,7 @@ using System.Text;
 using static CL_REUFT.Text_UI;
 using static CL_REUFT.CaesarCipher;
 using static CL_REUFT.GetToTheTop;
+using static CL_REUFT.MaxSort;
 using System.Diagnostics;
 using System.Numerics;
 Console.OutputEncoding = Encoding.UTF8;
@@ -165,6 +166,40 @@ CL_REUFT.Text_UI.Create_Button(Amusements_Canvas, new CL_REUFT.Text_UI.Text("Tet
     }
 }
 
+void maxSort() 
+{
+
+    Console.Clear();
+    Console.WriteLine("Give the list of values, write * once you're done");
+    List<int> listofvalues = new List<int>();
+    while(true)
+    {
+        var tmp = Console.ReadLine();
+        if(tmp == "*") { break; }
+        listofvalues.Add(int.Parse(tmp));
+    }
+
+    foreach (var i in CL_REUFT.MaxSort.maxSort(listofvalues)) { Console.WriteLine(i); }
+    Console.ReadKey();
+}
+void Submenu_sorters() 
+{
+    Canvas Sorters_Canvas = new Canvas();
+    Console.Clear();
+    CL_REUFT.Text_UI.Create_Button(Sorters_Canvas, new CL_REUFT.Text_UI.Text("Max Sort"), maxSort);
+    CL_REUFT.Text_UI.Create_Button(Sorters_Canvas, new CL_REUFT.Text_UI.Text("Back"), main_menu);
+    while (true)
+    {
+        Console.Clear();
+        Console.SetCursorPosition(0, 0);
+        Sorters_Canvas.UpdateLoop();
+
+        Thread.Sleep(50);
+        Console.SetCursorPosition(20, 29);
+        Console.Write(" ");
+
+    }
+}
 void main_menu()
 {
     //Canvas is where all the elements are, essentially does nothing right now, mostly there in case the UI code is expanded upon in the future
@@ -175,12 +210,12 @@ void main_menu()
     CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("RSA Decryption"), RSA_Decryptor);
     CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Caesar Cipher"), Caesar_Cipher);
     CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Flash Usb ||| Needs DD and Admin"), FlashUsb);
+
+    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Sorters"), Submenu_sorters);
+    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Amusements"), Submenu_amusements);
     
 
-    CL_REUFT.Text_UI.Create_Button(Main_Menu_Canvas, new CL_REUFT.Text_UI.Text("Amusements"), Submenu_amusements);
 
-
-     
 
 
 
