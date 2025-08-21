@@ -13,7 +13,7 @@ using System.Numerics;
 Console.OutputEncoding = Encoding.UTF8;
 
 
-RSA RSA_object = new RSA(); // Create The RSA object (contains RSA methods)
+RSA RSA_object = new RSA(); // Create The RSA object (contains RSA methods), this probably could've been a static class but oh well
 static void FlashUsb()
 {
     Console.CursorVisible = true; 
@@ -221,7 +221,7 @@ void main_menu()
 
     Console.Clear();
     Console.CursorVisible = false;
-    while (true) //Simple forever loop for the main menu
+    while (true) //Simple forever loop for the main menu, ideally this would be done inside the Canvas but I made poor design choices
     {
 
 
@@ -231,7 +231,7 @@ void main_menu()
         Main_Menu_Canvas.UpdateLoop();
         Thread.Sleep(50);
 
-        //Hack to stop the flickering
+        //Hack to stop (more so lessen) the flickering
         Console.SetCursorPosition(20, 29);
         Console.Write(" ");
 

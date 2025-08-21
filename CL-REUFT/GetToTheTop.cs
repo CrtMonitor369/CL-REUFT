@@ -9,7 +9,7 @@ namespace CL_REUFT
 {
     internal class GetToTheTop
     {
-        //Heavily WIP, odds are this won't be done 
+        
         public class Position //Position class to make life easier
         {
             private int x;
@@ -102,7 +102,7 @@ namespace CL_REUFT
         {
             return map[map_width * pos.GetY() + pos.GetX()];
         }
-        class Player 
+        class Player //See? This game IS object oriented, here's a class!
         {
             public int dir = 0;
             public Position Camera = new Position(0, 0);
@@ -117,7 +117,7 @@ namespace CL_REUFT
                 PlayerWorldSpace = starting_position;
             }
             public void PlayerLogic(List<int> map_static)
-            { //Excluding controls
+            { //Except for the controls which are handled in the game logic because otherwise it doesn't work, yes I know, it really should be handled here
                 animFrame += 1;
                 animFrame %= 2;
                 
@@ -151,7 +151,7 @@ namespace CL_REUFT
 
                 }
             }
-               public  int PlayerIsCollidingWithWhat(List<int> map_static)
+               public  int PlayerIsCollidingWithWhat(List<int> map_static) //An abstraction to make checking collisions easier, makes the code less horrible
             {
 
                 return Access1DListWith2DCoords(new Position(PlayerWorldSpace.GetX() + 8, PlayerWorldSpace.GetY() + 5), map_static);
@@ -202,7 +202,7 @@ namespace CL_REUFT
             player.PlayerScreenSpace.SetX(8);
             player.PlayerScreenSpace.SetY(5);
         }
-        private void GameLogic() 
+        private void GameLogic() //An example of a poor design choice
         {
 
              if (player.PlayerIsCollidingWithWhat(map_static) == 3)
@@ -347,7 +347,7 @@ namespace CL_REUFT
             
             
         }
-        private void RenderSpriteLayer() 
+        private void RenderSpriteLayer() //This is here just in case the program has more non static sprites
         {
 
         RenderPlayer();
@@ -364,7 +364,7 @@ namespace CL_REUFT
 
         
 
-        private void RenderPlayer() 
+        private void RenderPlayer() //Self explanatory, should really be DrawPlayer instead though, no rendering is done
         {
             if (((player.PlayerScreenSpace.GetX() > 0) && (player.PlayerScreenSpace.GetX() < 20)) && ((player.PlayerScreenSpace.GetY() > 0) && (player.PlayerScreenSpace.GetY() < 10)))
             {
@@ -381,7 +381,7 @@ namespace CL_REUFT
         //Console.SetCursorPosition(0, 0);
         }
 
-        private void DebugInfo() 
+        private void DebugInfo() //Used for debugging problems
         {
             Console.SetCursorPosition(2, 10);
             Console.Write(player.PlayerWorldSpace.GetX());
@@ -405,7 +405,7 @@ namespace CL_REUFT
             Console.Write(player.ftTravelled);
             Console.Write("  FT travelled");
         }
-        private void Gameloop() 
+        private void Gameloop() //Standard game loop
         {
             while (true)
             {

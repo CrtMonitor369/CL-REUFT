@@ -139,8 +139,8 @@ namespace CL_REUFT
             }
            
         }
-        private void PlayerLogic() //Horrid and inefficient code here, mostly works, occasional glitch where player clips through blocks, no clue why
-
+        private void PlayerLogic() //mostly works, occasional glitch where player clips through blocks, no clue why, but it works 100% of the time 95% of the time
+            
         {
             //Funky code full of magic numbers, this could certainly be done in a smarter way
             if (ApplyingGravityToBoard != true)
@@ -316,7 +316,7 @@ namespace CL_REUFT
             PlayerLogic();
             //CheckIfLineToBeClearedAndClearAlsoApplyGravityToBlocks();
         }
-        private void ClearLines() 
+        private void ClearLines() //This works but the apply gravity method seems to result in odd line clearing behaviour, I don't have a tetris game to reference so I'll just guess it's ok
         {
             for (int i = 0; i < 20; i++) 
             {
@@ -347,7 +347,7 @@ namespace CL_REUFT
                 }
             }
         }
-        private void ApplyGravityToLines() 
+        private void ApplyGravityToLines() //I'm not entirely sure that this is entirely correct
         {
             for(int i = 0;i < 20; i++) 
             {
