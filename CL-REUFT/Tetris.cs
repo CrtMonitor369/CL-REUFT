@@ -28,7 +28,7 @@ namespace CL_REUFT
     
        
         Position PlayerPosition = new Position(0,0); //The player's position
-        short CurrentShape = 1; //The current shape...duh
+        short CurrentShape = 2; //The current shape...duh
         short CurrentRotation = 0; //The current rotation...duh
         bool ApplyingGravityToBoard=false;
         List<int> board = new List<int>(); //The static board, ie where the tetronominoes are placed after a second or so of not moving
@@ -95,6 +95,32 @@ namespace CL_REUFT
             }
             );
 
+            Shapes.Add(new List<Position>()
+            {
+            new Position(0,0),
+            new Position(0,1),
+            new Position(0,2),
+            new Position(0,3),
+
+            new Position(0,0),
+            new Position(1,0),
+            new Position(2,0),
+            new Position(3,0),
+
+            new Position(1,0),
+            new Position(1,1),
+            new Position(1,2),
+            new Position(1,3),
+
+            new Position(0,0),
+            new Position(1,0),
+            new Position(2,0),
+            new Position(3,0),
+
+
+            }
+           );
+
 
 
             for (int i = 0; i < 200; i++) 
@@ -140,7 +166,8 @@ namespace CL_REUFT
            
         }
         private void PlayerLogic() //mostly works, occasional glitch where player clips through blocks, no clue why, but it works 100% of the time 95% of the time
-            
+        
+
         {
             //Funky code full of magic numbers, this could certainly be done in a smarter way
             if (ApplyingGravityToBoard != true)
@@ -235,7 +262,7 @@ namespace CL_REUFT
                                 int playerX = Shapes[CurrentShape][CurrentRotation * 4 + i].GetX() + PlayerPosition.GetX();
                                 int ElementToTheLeft = 0;
 
-                                if (playerX < 8)
+                                if (playerX > 0)
                                 {
                                     ElementToTheLeft = board[(10 * playerY + playerX - 1)];
                                 }
@@ -259,7 +286,7 @@ namespace CL_REUFT
                                 int playerX = Shapes[CurrentShape][CurrentRotation * 4 + i].GetX() + PlayerPosition.GetX();
                                 int ElementToTheRight = 0;
 
-                                if (playerX > 0)
+                                if (playerX < 9)
                                 {
                                     ElementToTheRight = board[(10 * playerY + playerX + 1)];
                                 }
@@ -276,24 +303,36 @@ namespace CL_REUFT
                         case ConsoleKey.UpArrow:
 
                             int RotTest = CurrentRotation + 1;
-                            RotTest %= 3;
+                            RotTest %= 3; 
+                            bool validRotation=true;
                             for (int i = 0; i < 4; i++)
                             {
+                                
                                 int playerX = Shapes[CurrentShape][RotTest * 4 + i].GetX() + PlayerPosition.GetX();
                                 int playerY = (Shapes[CurrentShape][RotTest * 4 + i].GetY() + PlayerPosition.GetY()) + 1;
+                                int ElementToTheLeft = board[(10 * playerY + playerX - 1)];
+                                int ElementToTheRight = board[(10 * playerY + playerX + 1)];
                                 if (playerX > 9)
                                 {
-                                    PlayerPosition.SetX(PlayerPosition.GetX() - 1);
+                                    validRotation = false;
+                                    //PlayerPosition.SetX(PlayerPosition.GetX() - 1);
                                 }
                                 if (playerX < 0)
                                 {
-                                    PlayerPosition.SetX(PlayerPosition.GetX() + 1);
+                                    validRotation = false;
+                                    //PlayerPosition.SetX(PlayerPosition.GetX() + 1);
                                 }
 
+                                if (ElementToTheLeft != 0) { validRotation = false; }
+                                if(ElementToTheRight!=0) { validRotation = false; }
 
                             }
                             CurrentRotation %= 3;
-                            CurrentRotation += 1;
+                            if (validRotation)
+                            {
+                                
+                                CurrentRotation += 1;
+                            }
 
                             break;
 
@@ -392,3 +431,5 @@ namespace CL_REUFT
 
     }
 }
+
+
