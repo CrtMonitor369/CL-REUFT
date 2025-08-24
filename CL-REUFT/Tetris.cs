@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,7 +29,7 @@ namespace CL_REUFT
     
        
         Position PlayerPosition = new Position(0,0); //The player's position
-        short CurrentShape = 2; //The current shape...duh
+        short CurrentShape = 6; //The current shape...duh
         short CurrentRotation = 0; //The current rotation...duh
         bool ApplyingGravityToBoard=false;
         List<int> board = new List<int>(); //The static board, ie where the tetronominoes are placed after a second or so of not moving
@@ -37,8 +38,10 @@ namespace CL_REUFT
         bool onFloor;
         int score;
         bool Sandmode = false;
+        bool dead;
         public void init() 
         {
+            bool dead = false;
             Console.WriteLine("enable sandmode? y/n");
             if (Console.ReadLine().ToUpper() == "Y") {Sandmode = true;}
             score= 0;
@@ -120,6 +123,108 @@ namespace CL_REUFT
 
             }
            );
+            Shapes.Add(new List<Position>()
+            {
+            new Position(2,0),
+            new Position(0,1),
+            new Position(1,1),
+            new Position(2,1),
+
+            new Position(0,0),
+            new Position(0,1),
+            new Position(0,2),
+            new Position(1,2),
+
+            new Position(0,2),
+            new Position(0,1),
+            new Position(1,1),
+            new Position(2,1),
+
+            new Position(0,0),
+            new Position(1,0),
+            new Position(1,1),
+            new Position(1,2),
+
+
+            }
+           );
+
+            Shapes.Add(new List<Position>()
+            {
+            new Position(0,0),
+            new Position(1,0),
+            new Position(1,1),
+            new Position(2,1),
+
+            new Position(1,0),
+            new Position(1,1),
+            new Position(2,1),
+            new Position(2,2),
+
+            new Position(0,1),
+            new Position(1,1),
+            new Position(1,2),
+            new Position(2,2),
+
+            new Position(1,0),
+            new Position(1,1),
+            new Position(2,1),
+            new Position(2,2),
+
+
+            }
+           );
+            Shapes.Add(new List<Position>()
+            {
+            new Position(1,0),
+            new Position(2,0),
+            new Position(0,1),
+            new Position(1,1),
+
+            new Position(0,0),
+            new Position(0,1),
+            new Position(1,1),
+            new Position(1,2),
+
+            new Position(0,1),
+            new Position(1,1),
+            new Position(1,2),
+            new Position(2,2),
+
+            new Position(1,0),
+            new Position(1,1),
+            new Position(2,1),
+            new Position(2,2),
+
+
+            }
+           );
+            Shapes.Add(new List<Position>()
+            {
+            new Position(1,0),
+            new Position(0,1),
+            new Position(1,1),
+            new Position(2,1),
+
+            new Position(0,0),
+            new Position(0,1),
+            new Position(1,1),
+            new Position(0,2),
+
+            new Position(0,0),
+            new Position(1,0),
+            new Position(2,0),
+            new Position(1,1),
+
+            new Position(1,0),
+            new Position(0,1),
+            new Position(1,1),
+            new Position(1,2),
+
+
+            }
+           );
+
 
 
 
@@ -239,10 +344,21 @@ namespace CL_REUFT
 
                         if (i == 3)
                         {
+                            
+
                             PlayerPosition.SetX(0);
                             PlayerPosition.SetY(0);
+                            playerX = Shapes[CurrentShape][CurrentRotation * 4 + i].GetX() + PlayerPosition.GetX();
+                            playerY = (Shapes[CurrentShape][CurrentRotation * 4 + i].GetY() + PlayerPosition.GetY() + 1);
+                            int elementBelow = board[(10 * (playerY + 1) + playerX)];
+                            if (elementBelow != 0) 
+                            {
+                                dead = true;
+                                break;
+                            }
                             timer = 0;
                             CurrentRotation = 0;
+                            CurrentShape = Convert.ToInt16(RandomNumberGenerator.GetInt32(7));
                             onFloor = false;
                         }
 
@@ -413,7 +529,7 @@ namespace CL_REUFT
         }
         private void GameLoop() 
         {
-            while (true)
+            while (dead!=true)
             {
                 Console.Clear();    
                 DrawBoard();
@@ -425,6 +541,23 @@ namespace CL_REUFT
                 
                 
             }
+            //Console.Clear();
+            Console.SetCursorPosition(10, 20);
+            Console.Write(' ');
+            Console.SetCursorPosition(0, 0);
+            for (int i = 0; i < 20; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    Thread.Sleep(20);
+                    Console.Write("#");
+                }
+                Console.SetCursorPosition(0, i);
+            }
+
+
+            Console.WriteLine(score);
+            Console.ReadKey();
         }
 
 

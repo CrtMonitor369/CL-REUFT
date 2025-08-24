@@ -105,7 +105,7 @@ namespace CL_REUFT
         class Player //See? This game IS object oriented, here's a class!
         {
             public int dir = 0;
-            public Position Camera = new Position(0, 0);
+            public Position Camera = new Position(50, 1000);
             public int ftTravelled = 0;
             public int animFrame = 0;
 
