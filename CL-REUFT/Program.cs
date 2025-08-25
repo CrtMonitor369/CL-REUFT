@@ -166,6 +166,22 @@ CL_REUFT.Text_UI.Create_Button(Amusements_Canvas, new CL_REUFT.Text_UI.Text("Tet
     }
 }
 
+void bucketSort() 
+{
+    Console.Clear();
+    Console.WriteLine("Give the list of values, write * once you're done");
+    List<int> listofvalues = new List<int>();
+    while (true)
+    {
+        var tmp = Console.ReadLine();
+        if (tmp == "*") { break; }
+        listofvalues.Add(int.Parse(tmp));
+    }
+
+    foreach (var i in CL_REUFT.BucketSort.bucketsort(listofvalues)) { Console.WriteLine(i); }
+    Console.ReadKey();
+}
+
 void maxSort() 
 {
 
@@ -187,6 +203,7 @@ void Submenu_sorters()
     Canvas Sorters_Canvas = new Canvas();
     Console.Clear();
     CL_REUFT.Text_UI.Create_Button(Sorters_Canvas, new CL_REUFT.Text_UI.Text("Max Sort"), maxSort);
+    CL_REUFT.Text_UI.Create_Button(Sorters_Canvas, new CL_REUFT.Text_UI.Text("Bucket Sort"), bucketSort);
     CL_REUFT.Text_UI.Create_Button(Sorters_Canvas, new CL_REUFT.Text_UI.Text("Back"), main_menu);
     while (true)
     {

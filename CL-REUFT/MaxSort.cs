@@ -21,5 +21,20 @@ namespace CL_REUFT
             }
         return new_list;
         }
+
+        static public List<int> minSort(List<int> list)
+        {
+            List<int> new_list = new List<int>();
+            while (list.Count > 0)
+            {
+                new_list.Add(list.Min());
+                list.RemoveAt(list.IndexOf(list.Min()));
+            }
+            return new_list;
+        }
+
     }
+
+
+
 }

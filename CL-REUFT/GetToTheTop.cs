@@ -117,7 +117,8 @@ namespace CL_REUFT
                 PlayerWorldSpace = starting_position;
             }
             public void PlayerLogic(List<int> map_static)
-            { //Except for the controls which are handled in the game logic because otherwise it doesn't work, yes I know, it really should be handled here
+            { //This is where all the things related to the player are done
+              //...except for the controls which are handled in the game logic because otherwise it doesn't work, yes I know, it really should be handled here
                 animFrame += 1;
                 animFrame %= 2;
                 
@@ -204,7 +205,7 @@ namespace CL_REUFT
         }
         private void GameLogic() //An example of a poor design choice
         {
-
+            // This could've been a switch statement, not that it really matters
              if (player.PlayerIsCollidingWithWhat(map_static) == 3)
                 {
                     int randomNumber = RandomNumberGenerator.GetInt32(-100, 100);
@@ -419,7 +420,7 @@ namespace CL_REUFT
                 Thread.Sleep(50);
 
 
-                Console.SetCursorPosition(20, 29);
+                Console.SetCursorPosition(20, 29); //Hack to reduce flickering
                 Console.Write(" ");
 
             }
